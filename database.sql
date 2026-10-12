@@ -1,0 +1,83 @@
+-- Importez ce fichier dans phpMyAdmin (onglet "Importer")
+CREATE DATABASE IF NOT EXISTS occasion_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE occasion_db;
+
+CREATE TABLE users (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(60) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE products (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  seller_id INT UNSIGNED NOT NULL,
+  title VARCHAR(120) NOT NULL,
+  description TEXT NOT NULL,
+  price INT UNSIGNED NOT NULL,
+  category VARCHAR(60) NOT NULL,
+  item_condition VARCHAR(30) NOT NULL,
+  image VARCHAR(60) DEFAULT NULL,
+  status ENUM('available','sold') NOT NULL DEFAULT 'available',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_status_created (status, created_at),
+  INDEX idx_category (category)
+) ENGINE=InnoDB;
+
+CREATE TABLE cart_items (
+  user_id INT UNSIGNED NOT NULL,
+  product_id INT UNSIGNED NOT NULL,
+  added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, product_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE orders (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  buyer_id INT UNSIGNED NOT NULL,
+  total INT UNSIGNED NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (buyer_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE order_items (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  order_id INT UNSIGNED NOT NULL,
+  product_id INT UNSIGNED DEFAULT NULL,
+  seller_id INT UNSIGNED NOT NULL,
+  title VARCHAR(120) NOT NULL,
+  price INT UNSIGNED NOT NULL,
+  FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL,
+  FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE ratings (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  product_id INT UNSIGNED NOT NULL,
+  stars TINYINT UNSIGNED NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uniq_user_product (user_id, product_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+  CHECK (stars BETWEEN 1 AND 5)
+) ENGINE=InnoDB;
+
+CREATE TABLE messages (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  product_id INT UNSIGNED NOT NULL,
+  sender_id INT UNSIGNED NOT NULL,
+  receiver_id INT UNSIGNED NOT NULL,
+  body VARCHAR(1000) NOT NULL,
+  is_read TINYINT(1) NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+  FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_conv (product_id, sender_id, receiver_id),
+  INDEX idx_unread (receiver_id, is_read)
+) ENGINE=InnoDB;
