@@ -38,7 +38,8 @@ include 'includes/header.php';
           <div class="card-body">
             <h3><?= e($p['title']) ?></h3>
             <p class="price"><?= price_fmt($p['price']) ?></p>
-            <p><?= stars_html($p['avg_stars'], $p['n_ratings']) ?></p>
+            <?php if ($p['seller_stars'] !== null): ?><p><?= seller_stars_html($p['seller_stars']) ?></p><?php endif; ?>
+            <p class="small"><span class="muted">Avis acheteurs :</span> <?= stars_html($p['avg_stars'], $p['n_ratings']) ?></p>
           </div>
         </a>
       <?php endforeach; ?>

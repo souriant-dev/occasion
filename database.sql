@@ -19,9 +19,11 @@ CREATE TABLE products (
   category VARCHAR(60) NOT NULL,
   item_condition VARCHAR(30) NOT NULL,
   image VARCHAR(60) DEFAULT NULL,
+  seller_stars TINYINT UNSIGNED DEFAULT NULL,
   status ENUM('available','sold') NOT NULL DEFAULT 'available',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE,
+  CHECK (seller_stars IS NULL OR seller_stars BETWEEN 1 AND 5),
   INDEX idx_status_created (status, created_at),
   INDEX idx_category (category)
 ) ENGINE=InnoDB;

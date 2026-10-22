@@ -42,6 +42,8 @@ img{max-width:100%;display:block}
 .btn-danger{background:#fee2e2;color:var(--danger)}
 .btn-sm{padding:.3rem .7rem;font-size:.85rem}
 .btn-block{display:block;width:100%}
+.topbar #menu button.user-avatar{display:flex;align-items:center;justify-content:center;flex:0 0 40px;width:40px;height:40px;min-width:40px;padding:0;appearance:none;border:0;border-radius:50%;background:var(--primary);color:#fff;font-size:.85rem;font-weight:700;letter-spacing:.03em}
+.user-avatar:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
 /* Alerts */
 .alert{padding:.8rem 1rem;border-radius:10px;margin-bottom:1rem;border:1px solid}
@@ -95,6 +97,13 @@ img{max-width:100%;display:block}
 .stars{--pct:calc(var(--rating,0) / 5 * 100%);display:inline-block;font-size:1.05rem;letter-spacing:2px;line-height:1;
   background:linear-gradient(90deg,var(--accent) var(--pct),#d1d5db var(--pct));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .rate-box{margin-top:1.2rem;padding:1rem;background:var(--surface);border-radius:var(--radius);border:1px dashed var(--border);display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.seller-rating{border:0;padding:0;margin:0}
+.seller-rating legend{font-weight:600;font-size:.92rem;margin-bottom:.3rem}
+.seller-rating-options{display:flex;gap:.1rem}
+.seller-rating-option{position:relative;color:#d1d5db;font-size:2rem;line-height:1;cursor:pointer}
+.seller-rating-option input{position:absolute;width:1px;height:1px;opacity:0}
+.seller-rating-option:has(input:checked),.seller-rating-option:has(input:checked)~.seller-rating-option,.seller-rating-option:hover,.seller-rating-option:hover~.seller-rating-option{color:var(--accent)}
+.seller-rating-option:focus-within{outline:2px solid var(--primary);outline-offset:2px}
 .rate-input button{background:none;border:0;font-size:1.9rem;line-height:1;color:#d1d5db;cursor:pointer;padding:0 .1rem;transition:transform .1s}
 .rate-input button.on{color:var(--accent)}
 .rate-input button:hover{transform:scale(1.15)}

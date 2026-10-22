@@ -6,17 +6,18 @@ Application web en **HTML, CSS, JavaScript et PHP (PDO/MySQL)**, sans aucun fram
 - **Interface visiteur** : page d'accueil (présentation, dernières annonces). Le détail, l'achat et le chat exigent un compte.
 - **Compte obligatoire** : inscription / connexion / déconnexion (mots de passe hachés avec `password_hash`).
 - **Boutique** : recherche, filtre par catégorie et prix, tri (récent, prix, mieux notés), pagination.
-- **Publier une annonce** : titre, description, prix, catégorie, état, photo (JPG/PNG/WebP, 3 Mo max).
+- **Publier une annonce** : titre, description, prix, catégorie, état, note du vendeur de 1 à 5 étoiles et photo (JPG/PNG/WebP, 3 Mo max).
 - **Mes annonces** : liste, statut (en ligne / vendu), suppression.
 - **Panier** (ajout/retrait en AJAX) et **validation de commande** (transaction SQL : les articles passent « vendus » et sortent de tous les paniers).
 - **Chat** acheteur ↔ vendeur par annonce (rafraîchissement automatique toutes les 3 s, badge de messages non lus).
-- **Notes de 1 à 5 étoiles** par produit (une note par utilisateur, modifiable ; on ne peut pas noter son propre article).
+- **Notes distinctes** : le vendeur choisit une note de 1 à 5 étoiles pour son article à la publication ; les acheteurs peuvent aussi laisser un avis (une note par utilisateur, modifiable ; le vendeur ne peut pas noter son propre article).
 - Historique des **achats** et des **ventes**.
 
 ## Installation (WAMP / Windows)
 1. Copiez le dossier `occasion` dans `C:\wamp64\www\`.
 2. Ouvrez **phpMyAdmin** → onglet **Importer** → choisissez `database.sql` → Exécuter
    (cela crée la base `occasion_db` et ses tables).
+   Si la base existe déjà, importez plutôt `migrations/20261023_add_seller_stars.sql`.
 3. Vérifiez `config.php` (hôte, utilisateur `root`, mot de passe vide par défaut sous WAMP).
 4. Ouvrez **http://localhost/occasion/**
 5. Assurez-vous que le dossier `uploads/` est accessible en écriture.

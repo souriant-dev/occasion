@@ -88,6 +88,11 @@ function stars_html($avg, $n = null): string {
     return $h;
 }
 
+function seller_stars_html($stars): string {
+    if ($stars === null || $stars === '') return '';
+    return '<span class="muted small">Note du vendeur :</span> ' . stars_html($stars);
+}
+
 function cart_count(int $uid): int {
     $s = db()->prepare('SELECT COUNT(*) FROM cart_items WHERE user_id = ?');
     $s->execute([$uid]);
@@ -143,7 +148,8 @@ function render_card(array $p): string {
         . '<div class="card-img">' . $img . $sold . '</div>'
         . '<div class="card-body"><h3>' . e($p['title']) . '</h3>'
         . '<p class="price">' . price_fmt($p['price']) . '</p>'
-        . '<p>' . stars_html($p['avg_stars'], $p['n_ratings']) . '</p>'
+        . ($p['seller_stars'] !== null ? '<p>' . seller_stars_html($p['seller_stars']) . '</p>' : '')
+        . '<p class="small"><span class="muted">Avis acheteurs :</span> ' . stars_html($p['avg_stars'], $p['n_ratings']) . '</p>'
         . '<p class="muted small">' . e($p['item_condition']) . ' · ' . e($p['seller_name']) . '</p></div></a>';
 }
 

@@ -35,7 +35,9 @@ include 'includes/header.php';
   <div class="product-info">
     <h1><?= e($p['title']) ?> <?= $available ? '' : '<span class="tag tag-sold">Vendu</span>' ?></h1>
     <p class="price big"><?= price_fmt($p['price']) ?></p>
-    <p><span id="avg-stars"><?= stars_html($p['avg_stars']) ?></span>
+    <?php if ($p['seller_stars'] !== null): ?><p><?= seller_stars_html($p['seller_stars']) ?></p><?php endif; ?>
+    <p><span class="muted small">Avis acheteurs :</span>
+       <span id="avg-stars"><?= stars_html($p['avg_stars']) ?></span>
        <small class="muted" id="avg-text"><?= $p['n_ratings'] ? number_format($p['avg_stars'], 1, ',', '') . '/5 · ' . (int)$p['n_ratings'] . ' avis' : 'Pas encore noté' ?></small></p>
     <ul class="meta">
       <li><strong>Catégorie :</strong> <?= e($p['category']) ?></li>

@@ -29,12 +29,13 @@ include 'includes/header.php';
   <div class="empty"><p>Vous n'avez publié aucune annonce.</p></div>
 <?php else: ?>
 <div class="table-wrap"><table class="table">
-  <thead><tr><th>Article</th><th>Prix</th><th>Note</th><th>Statut</th><th></th></tr></thead>
+  <thead><tr><th>Article</th><th>Prix</th><th>Note vendeur</th><th>Avis acheteurs</th><th>Statut</th><th></th></tr></thead>
   <tbody>
   <?php foreach ($mine as $p): ?>
     <tr>
       <td><a href="product.php?id=<?= (int)$p['id'] ?>"><?= e($p['title']) ?></a></td>
       <td><?= price_fmt($p['price']) ?></td>
+      <td><?= $p['seller_stars'] !== null ? stars_html($p['seller_stars']) : '—' ?></td>
       <td><?= stars_html($p['avg_stars'], $p['n_ratings']) ?></td>
       <td><?= $p['status'] === 'sold' ? '<span class="tag tag-sold">Vendu</span>' : '<span class="tag tag-ok">En ligne</span>' ?></td>
       <td>
